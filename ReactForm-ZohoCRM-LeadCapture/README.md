@@ -1,0 +1,1 @@
+This workflow captures lead data submitted through a React.js form via a webhook and automatically creates a new lead in Zoho CRM. It processes key details like name, email, and phone, formats the data, and stores it directly in the CRM. The system also sends an instant success response back to the frontend, ensuring a smooth user experience and real-time data handling.  

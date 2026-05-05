@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "zoho-lead",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "9f10b32c-4499-47f8-a9b9-5c356d5f97a3",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "e37dc33d-4ad0-4ac6-bd09-cfd198db586a"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Last_Name",
+              "value": "={{ $json.query.name }}"
+            },
+            {
+              "name": "Email",
+              "value": "={{ $json.query.email }}"
+            },
+            {
+              "name": "Phone",
+              "value": "={{ $json.query.phone }}"
+            },
+            {
+              "name": "Company",
+              "value": "n8n Lead"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7b1a1b98-9488-414d-84be-7f4787ac34fe",
+      "name": "Format Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "lead",
+        "Company": "={{$json.Company}}",
+        "lastName": "={{$json[\"Last_Name\"]}}",
+        "additionalFields": {}
+      },
+      "id": "5aa92eff-5b6f-44ae-a16a-22f066c22183",
+      "name": "Zoho CRM",
+      "type": "n8n-nodes-base.zohoCrm",
+      "typeVersion": 1,
+      "position": [
+        560,
+        16
+      ],
+      "credentials": {
+        "zohoOAuth2Api": {
+          "id": "TsATY5UL7WKTFdp5",
+          "name": "Zoho account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Lead created in Zoho CRM successfully!",
+        "options": {}
+      },
+      "id": "17e78942-d475-4c7b-8a88-11cda5b86adf",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Format Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Data": {
+      "main": [
+        [
+          {
+            "node": "Zoho CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zoho CRM": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c1e7c30ae963eb819db382124d0e777613e04d89c2a5fffcbc8adef85f13d1ae"
+  }
+}
